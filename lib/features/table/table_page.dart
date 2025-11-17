@@ -252,75 +252,81 @@ class _TablePageState extends State<TablePage> {
                   ),
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: SingleChildScrollView(
-                      child: DataTable(
-                        columns: [
-                          _buildDataColumn('name', 'Nome', theme),
-                          _buildDataColumn('category', 'Categoria', theme),
-                          _buildDataColumn('value', 'Valor', theme),
-                          _buildDataColumn('status', 'Status', theme),
-                          _buildDataColumn('createdAt', 'Data Criação', theme),
-                          DataColumn(
-                            label: Text(
-                              'Ações',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: theme.colorScheme.onSurface,
-                              ),
-                            ),
-                          ),
-                        ],
-                        rows: paginatedItems.map((item) {
-                          return DataRow(
-                            cells: [
-                              DataCell(Text(item.name)),
-                              DataCell(
-                                Chip(
-                                  label: Text(item.category),
-                                  backgroundColor: theme.colorScheme.primaryContainer,
-                                ),
-                              ),
-                              DataCell(Text(
-                                'R\$ ${item.value.toStringAsFixed(2)}',
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              )),
-                              DataCell(
-                                Chip(
-                                  label: Text(_getStatusLabel(item.status)),
-                                  backgroundColor: _getStatusColor(item.status, theme),
-                                ),
-                              ),
-                              DataCell(Text(
-                                '${item.createdAt.day.toString().padLeft(2, '0')}/${item.createdAt.month.toString().padLeft(2, '0')}/${item.createdAt.year}',
-                              )),
-                              DataCell(
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      color: theme.colorScheme.primary,
-                                      onPressed: () {
-                                        _showDrawer(context, item);
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      color: theme.colorScheme.error,
-                                      onPressed: () {
-                                        _showDeleteDialog(context, item);
-                                      },
-                                    ),
-                                  ],
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: SizedBox(
+                          width: constraints.maxWidth,
+                          child: DataTable(
+                            columnSpacing: 20,
+                            columns: [
+                              _buildDataColumn('name', 'Nome', theme),
+                              _buildDataColumn('category', 'Categoria', theme),
+                              _buildDataColumn('value', 'Valor', theme),
+                              _buildDataColumn('status', 'Status', theme),
+                              _buildDataColumn('createdAt', 'Data Criação', theme),
+                              DataColumn(
+                                label: Text(
+                                  'Ações',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.colorScheme.onSurface,
+                                  ),
                                 ),
                               ),
                             ],
-                          );
-                        }).toList(),
-                      ),
-                    ),
+                            rows: paginatedItems.map((item) {
+                              return DataRow(
+                                cells: [
+                                  DataCell(Text(item.name)),
+                                  DataCell(
+                                    Chip(
+                                      label: Text(item.category),
+                                      backgroundColor: theme.colorScheme.primaryContainer,
+                                    ),
+                                  ),
+                                  DataCell(Text(
+                                    'R\$ ${item.value.toStringAsFixed(2)}',
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  )),
+                                  DataCell(
+                                    Chip(
+                                      label: Text(_getStatusLabel(item.status)),
+                                      backgroundColor: _getStatusColor(item.status, theme),
+                                    ),
+                                  ),
+                                  DataCell(Text(
+                                    '${item.createdAt.day.toString().padLeft(2, '0')}/${item.createdAt.month.toString().padLeft(2, '0')}/${item.createdAt.year}',
+                                  )),
+                                  DataCell(
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          color: theme.colorScheme.primary,
+                                          onPressed: () {
+                                            _showDrawer(context, item);
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          color: theme.colorScheme.error,
+                                          onPressed: () {
+                                            _showDeleteDialog(context, item);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 Container(
